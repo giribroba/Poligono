@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Poligono
@@ -23,25 +17,25 @@ namespace Poligono
             Bitmap papel = new Bitmap(Picture.Width, Picture.Height);
             Graphics desenhador = Graphics.FromImage(papel);
 
-            Linha(desenhador);
+            DesenhaLinha(desenhador);
 
             Picture.BackgroundImage = papel;
         }
 
-        private void Linha(Graphics desenhador)
+        private void DesenhaLinha(Graphics desenhador)
         {
             var Xi = int.Parse(Xibx.Text);
             var Xf = int.Parse(Xfbx.Text);
             var Yi = int.Parse(Yibx.Text);
             var Yf = int.Parse(Yfbx.Text);
 
-            float dx = Math.Abs(Xi - Xf);
-            float dy = Math.Abs(Yi - Yf);
+            float dx = Xf - Xi;
+            float dy = Yf - Yi;
 
-            var steps = (dx > dy ? dx : dy);
+            var steps = (Math.Abs(dx) > Math.Abs(dy) ? Math.Abs(dx) : Math.Abs(dy));
 
-            float xInc = (float)(dx/steps);
-            float yInc = (float)(dy/steps);
+            float xInc = (float)(dx / steps);
+            float yInc = (float)(dy / steps);
 
             float xTemp = 0;
             float yTemp = 0;
@@ -55,11 +49,11 @@ namespace Poligono
                 {
                     if (Math.Abs(Yi + yTemp - Math.Floor(Yi + yTemp)) != 0.5f)
                     {
-                        Px((int) Math.Round(Xi + xTemp),(int) Math.Round(Xf + yTemp), desenhador);
+                        DesenhaPixel((int)Math.Round(Xi + xTemp), (int)Math.Round(Yi + yTemp), desenhador);
                     }
                     else
                     {
-                        Px((int)Math.Round(Xi + xTemp), (int)Math.Round(Xf + yTemp + (eY % 2 == 0 ? -0.5f : +0.5f)), desenhador);
+                        DesenhaPixel((int)Math.Round(Xi + xTemp), (int)Math.Round(Yi + yTemp + (eY % 2 == 0 ? -0.5f : +0.5f)), desenhador);
                         eY++;
                     }
                 }
@@ -67,11 +61,11 @@ namespace Poligono
                 {
                     if (Math.Abs(Yi + yTemp - Math.Floor(Yi + yTemp)) != 0.5f)
                     {
-                        Px((int)Math.Round(Xi + xTemp +(eX % 2 == 0 ? -0.5f : +0.5f)), (int)Math.Round(Xf + yTemp), desenhador);
+                        DesenhaPixel((int)Math.Round(Xi + xTemp + (eX % 2 == 0 ? -0.5f : +0.5f)), (int)Math.Round(Yi + yTemp), desenhador);
                     }
                     else
                     {
-                        Px((int)Math.Round(Xi + xTemp + (eX % 2 == 0 ? -0.5f : +0.5f)), (int)Math.Round(Xf + yTemp + (eY % 2 == 0 ? -0.5f : +0.5f)), desenhador);
+                        DesenhaPixel((int)Math.Round(Xi + xTemp + (eX % 2 == 0 ? -0.5f : +0.5f)), (int)Math.Round(Yi + yTemp + (eY % 2 == 0 ? -0.5f : +0.5f)), desenhador);
                         eY++;
                     }
                     eX++;
@@ -82,14 +76,12 @@ namespace Poligono
             }
         }
 
-        private void Px(int x, int y, Graphics desenhador)
+        private void DesenhaPixel(int x, int y, Graphics desenhador)
         {
             var caneta = new Pen(Color.Black, 1);
-            var pix = new Rectangle(Picture.Width/2 + x, Picture.Height/2 + y, 1, 1);
+            var pix = new Rectangle(Picture.Width / 2 + x, Picture.Height / 2 - y, 1, 1);
 
             desenhador.DrawRectangle(caneta, pix);
         }
-
-
     }
 }
