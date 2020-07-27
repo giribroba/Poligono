@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poligono", "Poligono\Poligono.csproj", "{E3F4B6E6-31F2-4C9E-9D08-06632F83D1FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3F4B6E6-31F2-4C9E-9D08-06632F83D1FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3F4B6E6-31F2-4C9E-9D08-06632F83D1FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3F4B6E6-31F2-4C9E-9D08-06632F83D1FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3F4B6E6-31F2-4C9E-9D08-06632F83D1FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40688BBA-3A1F-42AF-84BB-0FB948A1281B}
+	EndGlobalSection
+EndGlobal
