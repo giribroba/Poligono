@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -14,23 +15,33 @@ namespace Poligono
 
         private void Button_Click(object sender, EventArgs e)
         {
+            int raio = int.Parse(RaioBox.Text);
+            int lados = int.Parse(LadosBox.Text);
+            List<int[]> vertices = new List<int[]>();
+
             Bitmap papel = new Bitmap(Picture.Width, Picture.Height);
             Graphics desenhador = Graphics.FromImage(papel);
 
-            DesenhaLinha(desenhador);
+            double ang;
+            for (int i = 0; i <= lados; i++)
+            {
+                ang = 2 * Math.PI * i / lados;
+
+                vertices.Add(new int[] { (int)Math.Round(Math.Cos(ang) * raio), (int)Math.Round(Math.Sin(ang) * raio) });
+
+                if (i > 0)
+                {
+                    DesenhaLinha(desenhador, vertices[i - 1], vertices[i]);
+                }
+            }
 
             Picture.BackgroundImage = papel;
         }
 
-        private void DesenhaLinha(Graphics desenhador)
+        private void DesenhaLinha(Graphics desenhador, int[] vertice1, int[] vertice2)
         {
-            var Xi = int.Parse(Xibx.Text);
-            var Xf = int.Parse(Xfbx.Text);
-            var Yi = int.Parse(Yibx.Text);
-            var Yf = int.Parse(Yfbx.Text);
-
-            float dx = Xf - Xi;
-            float dy = Yf - Yi;
+            float dx = vertice2[0] - vertice1[0];
+            float dy = vertice2[1] - vertice1[1];
 
             var steps = (Math.Abs(dx) > Math.Abs(dy) ? Math.Abs(dx) : Math.Abs(dy));
 
@@ -45,27 +56,27 @@ namespace Poligono
 
             for (int i = 0; i < steps; i++)
             {
-                if (Math.Abs(Xi + xTemp - Math.Floor(Xi + xTemp)) != 0.5f)
+                if (Math.Abs(vertice1[0] + xTemp - Math.Floor(vertice1[0] + xTemp)) != 0.5f)
                 {
-                    if (Math.Abs(Yi + yTemp - Math.Floor(Yi + yTemp)) != 0.5f)
+                    if (Math.Abs(vertice1[1] + yTemp - Math.Floor(vertice1[1] + yTemp)) != 0.5f)
                     {
-                        DesenhaPixel((int)Math.Round(Xi + xTemp), (int)Math.Round(Yi + yTemp), desenhador);
+                        DesenhaPixel((int)Math.Round(vertice1[0] + xTemp), (int)Math.Round(vertice1[1] + yTemp), desenhador);
                     }
                     else
                     {
-                        DesenhaPixel((int)Math.Round(Xi + xTemp), (int)Math.Round(Yi + yTemp + (eY % 2 == 0 ? -0.5f : +0.5f)), desenhador);
+                        DesenhaPixel((int)Math.Round(vertice1[0] + xTemp), (int)Math.Round(vertice1[1] + yTemp + (eY % 2 == 0 ? -0.5f : +0.5f)), desenhador);
                         eY++;
                     }
                 }
                 else
                 {
-                    if (Math.Abs(Yi + yTemp - Math.Floor(Yi + yTemp)) != 0.5f)
+                    if (Math.Abs(vertice1[1] + yTemp - Math.Floor(vertice1[1] + yTemp)) != 0.5f)
                     {
-                        DesenhaPixel((int)Math.Round(Xi + xTemp + (eX % 2 == 0 ? -0.5f : +0.5f)), (int)Math.Round(Yi + yTemp), desenhador);
+                        DesenhaPixel((int)Math.Round(vertice1[0] + xTemp + (eX % 2 == 0 ? -0.5f : +0.5f)), (int)Math.Round(vertice1[1] + yTemp), desenhador);
                     }
                     else
                     {
-                        DesenhaPixel((int)Math.Round(Xi + xTemp + (eX % 2 == 0 ? -0.5f : +0.5f)), (int)Math.Round(Yi + yTemp + (eY % 2 == 0 ? -0.5f : +0.5f)), desenhador);
+                        DesenhaPixel((int)Math.Round(vertice1[0] + xTemp + (eX % 2 == 0 ? -0.5f : +0.5f)), (int)Math.Round(vertice1[1] + yTemp + (eY % 2 == 0 ? -0.5f : +0.5f)), desenhador);
                         eY++;
                     }
                     eX++;
@@ -80,7 +91,6 @@ namespace Poligono
         {
             var caneta = new Pen(Color.Black, 1);
             var pix = new Rectangle(Picture.Width / 2 + x, Picture.Height / 2 - y, 1, 1);
-
             desenhador.DrawRectangle(caneta, pix);
         }
     }
